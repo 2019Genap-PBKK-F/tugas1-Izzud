@@ -31,24 +31,12 @@ export default {
       bio: [
         {
           'id': 0,
-          'nrp': null,
-          'nama': null,
-          'angkatan': null,
-          'gender': null,
-          'dob': null,
-          'photo': null,
-          'active': null
+          'nama': null
         }
       ],
       template: {
         'id': 0,
-        'nrp': null,
-        'nama': null,
-        'angkatan': null,
-        'gender': null,
-        'dob': null,
-        'photo': null,
-        'active': null
+        'nama': null
       }
     }
   },
@@ -58,13 +46,7 @@ export default {
         data: this.bio,
         columns: [
           { type: 'hidden', title: 'ID', width: '120px', name: 'id' },
-          { type: 'numeric', title: 'NRP', width: '120px', name: 'nrp' },
-          { type: 'text', title: 'Nama', width: '120px', name: 'nama' },
-          { type: 'numeric', title: 'Angkatan', width: '120px', name: 'angkatan' },
-          { type: 'text', title: 'Jenis Kelamin', width: '120px', name: 'gender' },
-          { type: 'text', title: 'Tanggal lahir', width: '250px', name: 'dob' },
-          { type: 'image', title: 'Photo', width: '120px', name: 'photo' },
-          { type: 'checkbox', title: 'Aktif', width: '80px', name: 'active' }
+          { type: 'text', title: 'Nama', width: '120px', name: 'name' }
         ],
         onchange: this.changed,
         oninsertrow: this.insertedRow,
@@ -76,8 +58,8 @@ export default {
   methods: {
     load() {
       console.log('load')
-      console.log(host + '/api/mahasiswa')
-      axios.get(host + '/api/mahasiswa').then(response => {
+      console.log(host + '/api/kategori')
+      axios.get(host + '/api/kategori').then(response => {
         console.log(response)
         var valuesOnly = response.data
         this.bio = valuesOnly
@@ -92,31 +74,19 @@ export default {
 
       console.log('x: ' + x + '\ny: ' + y)
 
-      var id = y + 1
+      var id = y
       var data = {}
-      axios.get(host + '/api/mahasiswa').then((response) => {
-        console.log(response.data)
+      axios.get(host + '/api/kategori').then((response) => {
         data = Object.values(response.data[id])
-        // var keys = Object.keys(this.template)
-        // console.log('key: ' + keys)
-        // console.log(temp.constructor)
-        // var key = keys[x+1]
-        console.log(value)
 
         data[x] = value
         console.log(data)
         axios({
           method: 'put',
-          url: host + '/api/mahasiswa/' + data[0],
+          url: host + '/api/kategori/' + data[0],
           data: {
             'id': data[0],
-            'nrp': data[1],
-            'nama': data[2],
-            'angkatan': data[3],
-            'gender': data[4],
-            'dob': data[5],
-            'photo': data[6],
-            'active': data[7]
+            'nama': data[1]
           }
         }).then((response) => {
           console.log(response.data)
@@ -126,26 +96,21 @@ export default {
     insertedRow(instance) {
       axios({
         method: 'post',
-        url: host + '/api/mahasiswa/',
+        url: host + '/api/kategori/',
         data: {
-          'nrp': null,
-          'nama': null,
-          'angkatan': null,
-          'gender': null,
-          'dob': null,
-          'photo': null,
-          'active': null
+          'nama': null
         }
       }).then((response) => {
         console.log(response.data)
       })
     },
     deleteRow(instance, row) {
-      axios.get(host + '/api/mahasiswa').then(res => {
+      console.log(row)
+      axios.get(host + '/api/kategori/').then(res => {
+        console.log(res.data[row])
         var index = Object.values(res.data[row])
         // console.log(index)
-        console.log(row)
-        axios.delete(host + '/api/mahasiswa/' + index[0])
+        axios.delete(host + '/api/kategori/' + index[0])
       })
     }
   },

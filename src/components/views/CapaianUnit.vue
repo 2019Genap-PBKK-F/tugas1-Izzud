@@ -30,26 +30,12 @@ export default {
     return {
       bio: [
         {
-          'id': 0,
-          'nrp': null,
-          'nama': null,
-          'angkatan': null,
-          'gender': null,
-          'dob': null,
-          'photo': null,
-          'active': null
+          'DataDasar_id': 1,
+          'Unit_id': 1,
+          'waktu': null,
+          'capaian': 0.0
         }
-      ],
-      template: {
-        'id': 0,
-        'nrp': null,
-        'nama': null,
-        'angkatan': null,
-        'gender': null,
-        'dob': null,
-        'photo': null,
-        'active': null
-      }
+      ]
     }
   },
   computed: {
@@ -57,14 +43,10 @@ export default {
       return {
         data: this.bio,
         columns: [
-          { type: 'hidden', title: 'ID', width: '120px', name: 'id' },
-          { type: 'numeric', title: 'NRP', width: '120px', name: 'nrp' },
-          { type: 'text', title: 'Nama', width: '120px', name: 'nama' },
-          { type: 'numeric', title: 'Angkatan', width: '120px', name: 'angkatan' },
-          { type: 'text', title: 'Jenis Kelamin', width: '120px', name: 'gender' },
-          { type: 'text', title: 'Tanggal lahir', width: '250px', name: 'dob' },
-          { type: 'image', title: 'Photo', width: '120px', name: 'photo' },
-          { type: 'checkbox', title: 'Aktif', width: '80px', name: 'active' }
+          { type: 'dropdown', title: 'Data Dasar', url: host + '/api/dasar', width: '300px' },
+          { type: 'dropdown', title: 'Unit', url: host + '/api/unit-name', width: '300px' },
+          { type: 'text', title: 'waktu', width: '300px' },
+          { type: 'numeric', title: 'capaian', width: '300px' }
         ],
         onchange: this.changed,
         oninsertrow: this.insertedRow,
@@ -76,8 +58,8 @@ export default {
   methods: {
     load() {
       console.log('load')
-      console.log(host + '/api/mahasiswa')
-      axios.get(host + '/api/mahasiswa').then(response => {
+      console.log(host + '/api/capaian')
+      axios.get(host + '/api/capaian').then(response => {
         console.log(response)
         var valuesOnly = response.data
         this.bio = valuesOnly
@@ -92,31 +74,24 @@ export default {
 
       console.log('x: ' + x + '\ny: ' + y)
 
-      var id = y + 1
+      var id = y
       var data = {}
-      axios.get(host + '/api/mahasiswa').then((response) => {
-        console.log(response.data)
+      var old = {}
+      axios.get(host + '/api/capaian').then((response) => {
         data = Object.values(response.data[id])
-        // var keys = Object.keys(this.template)
-        // console.log('key: ' + keys)
-        // console.log(temp.constructor)
-        // var key = keys[x+1]
-        console.log(value)
+        old = Object.values(response.data[id])
 
         data[x] = value
         console.log(data)
+        console.log(old)
         axios({
           method: 'put',
-          url: host + '/api/mahasiswa/' + data[0],
+          url: host + '/api/capaian/' + old[0] + '&' + old[1],
           data: {
-            'id': data[0],
-            'nrp': data[1],
-            'nama': data[2],
-            'angkatan': data[3],
-            'gender': data[4],
-            'dob': data[5],
-            'photo': data[6],
-            'active': data[7]
+            'DataDasar_id': data[0],
+            'Unit_id': data[1],
+            'waktu': data[2],
+            'capaian': data[3]
           }
         }).then((response) => {
           console.log(response.data)
@@ -126,26 +101,24 @@ export default {
     insertedRow(instance) {
       axios({
         method: 'post',
-        url: host + '/api/mahasiswa/',
+        url: host + '/api/capaian/',
         data: {
-          'nrp': null,
-          'nama': null,
-          'angkatan': null,
-          'gender': null,
-          'dob': null,
-          'photo': null,
-          'active': null
+          'DataDasar_id': 1,
+          'Unit_id': 1,
+          'waktu': null,
+          'capaian': 0.0
         }
       }).then((response) => {
         console.log(response.data)
       })
     },
     deleteRow(instance, row) {
-      axios.get(host + '/api/mahasiswa').then(res => {
+      console.log(row)
+      axios.get(host + '/api/capaian/').then(res => {
+        console.log(res.data[row])
         var index = Object.values(res.data[row])
         // console.log(index)
-        console.log(row)
-        axios.delete(host + '/api/mahasiswa/' + index[0])
+        axios.delete(host + '/api/capaian/' + index[0] + '&' + index[1])
       })
     }
   },

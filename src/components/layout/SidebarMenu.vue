@@ -19,6 +19,36 @@
         <span class="page">Excel</span>
       </a>
     </router-link>
+        <router-link tag="li" class="pageLink" to="/datadasar">
+      <a>
+        <i class="fa fa-table"></i>
+        <span class="page">DataDasar</span>
+      </a>
+    </router-link>
+        <router-link tag="li" class="pageLink" to="/kategori">
+      <a>
+        <i class="fa fa-table"></i>
+        <span class="page">Kategori</span>
+      </a>
+    </router-link>
+        <router-link tag="li" class="pageLink" to="/unit">
+      <a>
+        <i class="fa fa-table"></i>
+        <span class="page">Unit</span>
+      </a>
+    </router-link>
+        <router-link tag="li" class="pageLink" to="/capaianunit">
+      <a>
+        <i class="fa fa-table"></i>
+        <span class="page">CapaianUnit</span>
+      </a>
+    </router-link>
+    <router-link tag="li" class="pageLink" to="/chart">
+      <a>
+        <i class="fa fa-table"></i>
+        <span class="page">ChartJS</span>
+      </a>
+    </router-link>
 
     <li class="header">ME</li>
     <router-link tag="li" class="pageLink" to="/tasks">
